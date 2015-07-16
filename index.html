@@ -1,0 +1,673 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Resistor</title>
+<meta name="apple-mobile-web-app-title" content="Resistor">
+
+<link rel="icon" type="image/png" href="touchicon.png" />
+<link rel="apple-touch-icon-precomposed" href="touchicon.png" />
+
+<meta name="viewport" content="user-scalable=yes, width=700"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no">
+
+<!--
+
+<link rel="apple-touch-startup-image" href="startup_320x460.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="touch-icon-iphone-retina.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="touch-icon-ipad-retina.png" />
+-->
+
+<link rel="stylesheet" href="popover.css" type="text/css" charset="UTF-8">
+<script src="popover.js" type="text/javascript"></script>
+
+<style type="text/css">
+
+
+body{
+	background-color: #ccc;
+	font-family:Arial, Helvetica, sans-serif;
+	
+	text-align:center;
+}
+
+
+#board{
+	position:relative;
+	display: inline-block;
+	
+	width: 685px;
+	height: 283px;
+}
+#pcb{
+	position:absolute;
+	z-index: 1;
+	width: 685px;
+	height: 283px;
+	
+	background-color: #360;
+	
+	box-shadow: inset 0px -8px 1px rgba(0,0,0,0), 0px 10px 16px rgba(0,0,0,0.75);
+	
+	--webkit-transform: perspective(600px) rotateX(5deg);
+	border-radius: 2px;
+	
+	border-bottom: 5px solid #857016;
+}
+
+#hole1 {
+	position: absolute;
+	left: 38px;
+	top: 121px;
+	width: 32px;
+	height: 32px;
+	z-index: 2;
+}
+#hole2 {
+	position: absolute;
+	left: 609px;
+	top: 121px;
+	width: 32px;
+	height: 32px;
+	z-index: 2;
+}
+
+#hole1,#hole2{
+	border-radius: 500px;
+	background-color:#666;
+	
+	box-shadow: inset 0px 0px 5px #000;
+}
+
+#label {
+	position: absolute;
+	left: 40px;
+	top: 206px;
+	width: 600px;
+	height: 60px;
+	z-index: 3;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 36px;
+	color: white;
+	opacity: 1;
+	background: transparent;
+	border: 0;
+}
+
+#label:focus{
+	
+}
+
+#resistor {
+	position: absolute;
+	left: 40px;
+	top: 60px;
+	width: 600px;
+	height: 130px;
+	z-index: 4;
+	background-image: url(res2.png);
+}
+
+#band1,
+#band2,
+#band3,
+#band4{
+	position: absolute;
+	z-index: 3;
+	
+	cursor: pointer;
+}
+
+#band1:hover,
+#band2:hover,
+#band3:hover,
+#band4:hover{
+	color:inherit;
+	opacity: 0.5;
+}
+
+#band1 {
+	left: 189px;
+	top: 1px;
+	width: 26px;
+	height: 128px;
+}
+#band2 {
+	left: 255px;
+	top: 10px;
+	width: 26px;
+	height: 109px;
+}
+#band3 {
+	left: 323px;
+	top: 11px;
+	width: 26px;
+	height: 107px;
+}
+#band4 {
+	left: 392px;
+	top: 1px;
+	width: 26px;
+	height: 128px;
+}
+
+.none{
+	background: transparent;
+	border: 1px dashed rgba(0,0,0,0.05);
+}
+.none:hover, button.none{
+	border: 1px dashed rgba(0,0,0,0.75);
+}
+
+.black{
+	opacity: 0.75;
+	color: white;
+	background-color: black;
+}
+
+.brown{
+	opacity: 0.85;
+	background: #893b31; /* Old browsers */
+	background: -moz-linear-gradient(top,  #893b31 0%, #a85348 50%, #893b31 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#893b31), color-stop(50%,#a85348), color-stop(100%,#893b31)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #893b31 0%,#a85348 50%,#893b31 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #893b31 0%,#a85348 50%,#893b31 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #893b31 0%,#a85348 50%,#893b31 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #893b31 0%,#a85348 50%,#893b31 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#893b31', endColorstr='#893b31',GradientType=0 ); /* IE6-9 */
+}
+
+.red{
+	opacity: 0.9;
+	background: #b20000; /* Old browsers */
+	background: -moz-linear-gradient(top,  #b20000 0%, #e80000 50%, #b20000 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b20000), color-stop(50%,#e80000), color-stop(100%,#b20000)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #b20000 0%,#e80000 50%,#b20000 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #b20000 0%,#e80000 50%,#b20000 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #b20000 0%,#e80000 50%,#b20000 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #b20000 0%,#e80000 50%,#b20000 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b20000', endColorstr='#b20000',GradientType=0 ); /* IE6-9 */
+}
+
+.orange{
+	opacity: 0.85;
+	background: #ed6200; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ed6200 0%, #ff8800 50%, #ed6200 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ed6200), color-stop(50%,#ff8800), color-stop(100%,#ed6200)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ed6200 0%,#ff8800 50%,#ed6200 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ed6200 0%,#ff8800 50%,#ed6200 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ed6200 0%,#ff8800 50%,#ed6200 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ed6200 0%,#ff8800 50%,#ed6200 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ed6200', endColorstr='#ed6200',GradientType=0 ); /* IE6-9 */
+}
+
+.yellow{
+	opacity: 0.85;
+	background: #ccb000; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ccb000 0%, #ffdd00 50%, #ccb000 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ccb000), color-stop(50%,#ffdd00), color-stop(100%,#ccb000)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ccb000 0%,#ffdd00 50%,#ccb000 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ccb000 0%,#ffdd00 50%,#ccb000 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ccb000 0%,#ffdd00 50%,#ccb000 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ccb000 0%,#ffdd00 50%,#ccb000 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ccb000', endColorstr='#ccb000',GradientType=0 ); /* IE6-9 */
+}
+
+.green{
+	opacity: 0.7;
+	background: #0a7f00; /* Old browsers */
+	background: -moz-linear-gradient(top,  #0a7f00 0%, #0fbf00 50%, #0a7f00 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0a7f00), color-stop(50%,#0fbf00), color-stop(100%,#0a7f00)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #0a7f00 0%,#0fbf00 50%,#0a7f00 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #0a7f00 0%,#0fbf00 50%,#0a7f00 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #0a7f00 0%,#0fbf00 50%,#0a7f00 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #0a7f00 0%,#0fbf00 50%,#0a7f00 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0a7f00', endColorstr='#0a7f00',GradientType=0 ); /* IE6-9 */
+}
+
+.blue{
+	opacity: 0.85;
+	background: #2140a5; /* Old browsers */
+	background: -moz-linear-gradient(top,  #2140a5 0%, #3561ff 50%, #2140a5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2140a5), color-stop(50%,#3561ff), color-stop(100%,#2140a5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #2140a5 0%,#3561ff 50%,#2140a5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #2140a5 0%,#3561ff 50%,#2140a5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #2140a5 0%,#3561ff 50%,#2140a5 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #2140a5 0%,#3561ff 50%,#2140a5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2140a5', endColorstr='#2140a5',GradientType=0 ); /* IE6-9 */
+}
+
+.violet{
+	opacity: 0.8;
+	background: #5500af; /* Old browsers */
+	background: -moz-linear-gradient(top,  #5500af 0%, #6e00e5 50%, #5500af 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5500af), color-stop(50%,#6e00e5), color-stop(100%,#5500af)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #5500af 0%,#6e00e5 50%,#5500af 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #5500af 0%,#6e00e5 50%,#5500af 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #5500af 0%,#6e00e5 50%,#5500af 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #5500af 0%,#6e00e5 50%,#5500af 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5500af', endColorstr='#5500af',GradientType=0 ); /* IE6-9 */
+}
+
+.grey{
+	opacity: 0.85;
+	background: #4e5360; /* Old browsers */
+	background: -moz-linear-gradient(top,  #4e5360 0%, #70788c 50%, #4e5360 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4e5360), color-stop(50%,#70788c), color-stop(100%,#4e5360)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #4e5360 0%,#70788c 50%,#4e5360 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #4e5360 0%,#70788c 50%,#4e5360 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #4e5360 0%,#70788c 50%,#4e5360 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #4e5360 0%,#70788c 50%,#4e5360 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4e5360', endColorstr='#4e5360',GradientType=0 ); /* IE6-9 */
+}
+
+.white{
+	opacity: 0.9;
+	background: #b7b4a3; /* Old browsers */
+	background: -moz-linear-gradient(top,  #b7b4a3 0%, #e5e4de 10%, #fcfcfc 50%, #e5e4de 90%, #b7b4a3 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b7b4a3), color-stop(10%,#e5e4de), color-stop(50%,#fcfcfc), color-stop(90%,#e5e4de), color-stop(100%,#b7b4a3)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #b7b4a3 0%,#e5e4de 10%,#fcfcfc 50%,#e5e4de 90%,#b7b4a3 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #b7b4a3 0%,#e5e4de 10%,#fcfcfc 50%,#e5e4de 90%,#b7b4a3 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #b7b4a3 0%,#e5e4de 10%,#fcfcfc 50%,#e5e4de 90%,#b7b4a3 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #b7b4a3 0%,#e5e4de 10%,#fcfcfc 50%,#e5e4de 90%,#b7b4a3 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7b4a3', endColorstr='#b7b4a3',GradientType=0 ); /* IE6-9 */
+}
+
+.gold{
+	opacity: 0.75;
+	background: #636000; /* Old browsers */
+	background: -moz-linear-gradient(top,  #636000 0%, #ffffc9 23%, #f7f7f7 28%, #f3f7ad 39%, #c1b83a 46%, #fff9a8 65%, #f7f7f7 76%, #ffffc9 85%, #7c7507 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#636000), color-stop(23%,#ffffc9), color-stop(28%,#f7f7f7), color-stop(39%,#f3f7ad), color-stop(46%,#c1b83a), color-stop(65%,#fff9a8), color-stop(76%,#f7f7f7), color-stop(85%,#ffffc9), color-stop(100%,#7c7507)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #636000 0%,#ffffc9 23%,#f7f7f7 28%,#f3f7ad 39%,#c1b83a 46%,#fff9a8 65%,#f7f7f7 76%,#ffffc9 85%,#7c7507 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #636000 0%,#ffffc9 23%,#f7f7f7 28%,#f3f7ad 39%,#c1b83a 46%,#fff9a8 65%,#f7f7f7 76%,#ffffc9 85%,#7c7507 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #636000 0%,#ffffc9 23%,#f7f7f7 28%,#f3f7ad 39%,#c1b83a 46%,#fff9a8 65%,#f7f7f7 76%,#ffffc9 85%,#7c7507 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #636000 0%,#ffffc9 23%,#f7f7f7 28%,#f3f7ad 39%,#c1b83a 46%,#fff9a8 65%,#f7f7f7 76%,#ffffc9 85%,#7c7507 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#636000', endColorstr='#7c7507',GradientType=0 ); /* IE6-9 */
+}
+
+.silver{
+	opacity: 0.75;
+	background: #4f4f4f; /* Old browsers */
+	background: -moz-linear-gradient(top,  #4f4f4f 0%, #f7f7f7 27%, #ededed 39%, #afafaf 46%, #d8d8d8 65%, #f7f7f7 76%, #d8d8d8 85%, #3f3f3f 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4f4f4f), color-stop(27%,#f7f7f7), color-stop(39%,#ededed), color-stop(46%,#afafaf), color-stop(65%,#d8d8d8), color-stop(76%,#f7f7f7), color-stop(85%,#d8d8d8), color-stop(100%,#3f3f3f)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #4f4f4f 0%,#f7f7f7 27%,#ededed 39%,#afafaf 46%,#d8d8d8 65%,#f7f7f7 76%,#d8d8d8 85%,#3f3f3f 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #4f4f4f 0%,#f7f7f7 27%,#ededed 39%,#afafaf 46%,#d8d8d8 65%,#f7f7f7 76%,#d8d8d8 85%,#3f3f3f 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #4f4f4f 0%,#f7f7f7 27%,#ededed 39%,#afafaf 46%,#d8d8d8 65%,#f7f7f7 76%,#d8d8d8 85%,#3f3f3f 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #4f4f4f 0%,#f7f7f7 27%,#ededed 39%,#afafaf 46%,#d8d8d8 65%,#f7f7f7 76%,#d8d8d8 85%,#3f3f3f 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f4f4f', endColorstr='#3f3f3f',GradientType=0 ); /* IE6-9 */
+}
+
+.popover button{
+	height: 32px;
+	-width: 194px;
+	width:100%;
+	cursor: pointer;
+	cursor: hand;
+	
+	overflow: hidden;
+}
+.popover button:not(:hover){
+	/*color: transparent;*/
+}
+
+.popover button strong{
+	float: left;
+	margin-left: 1em;
+}
+
+</style>
+
+
+
+
+</head>
+<body>
+
+<h1>Resistor</h1>
+
+<div id="board">
+	<div id="pcb">
+		<div id="hole1"></div>
+		<div id="hole2"></div>
+	</div>
+	
+	<div id="resistor">
+		<div id="band1" class="red"></div>
+		<div id="band2" class="violet"></div>
+		<div id="band3" class="yellow"></div>
+		<div id="band4" class="gold"></div>
+	</div>
+	
+	<input id="label" type="text" value="" placeholder="10KΩ 5%" spellcheck="false" autocomplete="on" autofocus>
+</div>
+
+<footer>
+<p><a href="http://www.vitim.us">Vitim.us</a></p>
+</footer>
+
+
+<script type="text/javascript">
+/* JAVASCRIPT GOES HERE */
+window.onload=function(){
+	
+	window.iOS = navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false;
+	
+	onChangeValue();
+	readHash();
+	
+	if ("onhashchange" in window){
+    	window.onhashchange = readHash;
+	}
+		
+	label.focus();
+	
+	label.onkeyup = onChangeValue;
+	label.onkeydown = onChangeValue;
+	label.onkeypress = onChangeValue;
+	label.onfocus = onChangeValue;
+			
+	Popover(band1, {
+		trigger: "click",
+		placement: "below",
+		title: "Select a color",
+		content: function(e){
+			var popover=this;
+			var target=e;
+			return tag('div',{ onclick:function(e){ if(e.target.tagName!='BUTTON')return; target.className = e.target.className; popover.close(); onChangeColor(e); } },
+						tag('button', {innerHTML:'<strong>0</strong> Black', class:'black', title:'0 - Black', disabled:'true'}),
+						tag('button', {innerHTML:'<strong>1</strong> Brown', class:'brown', title:'1 - Brown'}),
+						tag('button', {innerHTML:'<strong>2</strong> Red', class:'red', title:'2 - Red'}),
+						tag('button', {innerHTML:'<strong>3</strong> Orange', class:'orange', title:'3 - Orange'}),
+						tag('button', {innerHTML:'<strong>4</strong> Yellow', class:'yellow', title:'4 - Yellow'}),
+						tag('button', {innerHTML:'<strong>5</strong> Green', class:'green', title:'5 - Green'}),
+						tag('button', {innerHTML:'<strong>6</strong> Blue', class:'blue', title:'6 - Blue'}),
+						tag('button', {innerHTML:'<strong>7</strong> Violet', class:'violet', title:'7 - Violet'}),
+						tag('button', {innerHTML:'<strong>8</strong> Grey', class:'grey', title:'8 - Grey'}),
+						tag('button', {innerHTML:'<strong>9</strong> White', class:'white', title:'9 - White'})
+					);
+		}
+	});
+	
+	Popover(band2, {
+		trigger: "click",
+		placement: "below",
+		title: "Select a color",
+		content: function(e){
+			var popover=this;
+			var target=e;
+			return tag('div',{ onclick:function(e){ if(e.target.tagName!='BUTTON')return; target.className = e.target.className; popover.close(); onChangeColor(e); } },
+						tag('button', {innerHTML:'<strong>0</strong> Black', class:'black', title:'0 - Black'}),
+						tag('button', {innerHTML:'<strong>1</strong> Brown', class:'brown', title:'1 - Brown'}),
+						tag('button', {innerHTML:'<strong>2</strong> Red', class:'red', title:'2 - Red'}),
+						tag('button', {innerHTML:'<strong>3</strong> Orange', class:'orange', title:'3 - Orange'}),
+						tag('button', {innerHTML:'<strong>4</strong> Yellow', class:'yellow', title:'4 - Yellow'}),
+						tag('button', {innerHTML:'<strong>5</strong> Green', class:'green', title:'5 - Green'}),
+						tag('button', {innerHTML:'<strong>6</strong> Blue', class:'blue', title:'6 - Blue'}),
+						tag('button', {innerHTML:'<strong>7</strong> Violet', class:'violet', title:'7 - Violet'}),
+						tag('button', {innerHTML:'<strong>8</strong> Grey', class:'grey', title:'8 - Grey'}),
+						tag('button', {innerHTML:'<strong>9</strong> White', class:'white', title:'9 - White'})
+					);
+		}
+	});
+	
+	Popover(band3, {
+		trigger: "click",
+		placement: "below",
+		title: "Select a multiplier color",
+		content: function(e){
+			var popover=this;
+			var target=e;
+			return tag('div',{ onclick:function(e){ if(e.target.tagName!='BUTTON')return; target.className = e.target.className; popover.close(); onChangeColor(e); } },
+						tag('button', {innerHTML:'<strong>0</strong> Black', class:'black', title:'0 - Black'}),
+						tag('button', {innerHTML:'<strong>1</strong> Brown', class:'brown', title:'1 - Brown'}),
+						tag('button', {innerHTML:'<strong>2</strong> Red', class:'red', title:'2 - Red'}),
+						tag('button', {innerHTML:'<strong>3</strong> Orange', class:'orange', title:'3 - Orange'}),
+						tag('button', {innerHTML:'<strong>4</strong> Yellow', class:'yellow', title:'4 - Yellow'}),
+						tag('button', {innerHTML:'<strong>5</strong> Green', class:'green', title:'5 - Green'}),
+						tag('button', {innerHTML:'<strong>6</strong> Blue', class:'blue', title:'6 - Blue'}),
+						tag('button', {innerHTML:'<strong>7</strong> Violet', class:'violet', title:'7 - Violet'}),
+						tag('button', {innerHTML:'<strong>8</strong> Grey', class:'grey', title:'8 - Grey'}),
+						tag('button', {innerHTML:'<strong>9</strong> White', class:'white', title:'9 - White'}),
+						tag('button', {innerHTML:'<strong>0.1</strong> Gold', class:'gold', title:'0.1 - Gold'}),
+						tag('button', {innerHTML:'<strong>0.01</strong> Silver', class:'silver', title:'0.01 - Silver'})
+					);
+		}
+	});
+	
+	Popover(band4, {
+		trigger: "click",
+		placement: "below",
+		title: "Select a tollerance color",
+		content: function(e){
+			var popover=this;
+			var target=e;
+			return tag('div',{ onclick:function(e){ target.className = e.target.className; popover.close(); onChangeColor(e); } },
+						tag('button', {innerHTML:'<strong>1%</strong> Brown', class:'brown', title:'1% - Brown'}),
+						tag('button', {innerHTML:'<strong>2%</strong> Red', class:'red', title:'2% - Red'}),
+						tag('button', {innerHTML:'<strong>0.5%</strong> Green', class:'green', title:'0.5% - Green'}),
+						tag('button', {innerHTML:'<strong>0.25%</strong> Blue', class:'blue', title:'0.25% - Blue'}),
+						tag('button', {innerHTML:'<strong>0.1%</strong> Violet', class:'violet', title:'0.1% - Violet'}),
+						tag('button', {innerHTML:'<strong>0.05%</strong> Grey', class:'grey', title:'0.05% - Grey'}),
+						tag('button', {innerHTML:'<strong>5%</strong> Gold', class:'gold', title:'5% - Gold'}),
+						tag('button', {innerHTML:'<strong>10%</strong> Silver', class:'silver', title:'10% - Silver'}),
+						tag('button', {innerHTML:'<strong>20%</strong> None', class:'none', title:'20% - None'})
+					);
+		}
+	});
+		
+};
+
+var c = {
+	'0':'black','black':0,
+	'1':'brown','brown':1,
+	'2':'red','red':2,
+	'3':'orange','orange':3,
+	'4':'yellow','yellow':4,
+	'5':'green','green':5,
+	'6':'blue','blue':6,
+	'7':'violet','violet':7,
+	'8':'grey','grey':8,
+	'9':'white','white':9,
+	'-1':'gold','gold':-1,
+	'-2':'silver','silver':-2
+};
+
+var t = {
+	'brown':1,	'1%':'brown',
+	'red':2,'2%':'red',
+	'green':0.5,'0.5%':'green',
+	'blue':0.25,'0.25%':'blue',
+	'violet':0.1,'0.1%':'violet',
+	'grey':0.05,'0.05%':'grey',
+	'gold':5,'5%':'gold',
+	'silver':10,'10%':'silver',
+	'none':20,'20%':'none'	
+}
+
+function onChangeColor(e){
+	
+	var value = colorToValue(band1.className, band2.className, band3.className, band4.className);
+	
+	label.value = value;
+	
+	if(!iOS) //prevent opening iOS on screen keyboard
+		label.focus();
+	
+	if(e) changeHash(value);
+}
+
+function onChangeValue(e){
+	
+	var text = label.value || label.placeholder;
+	
+	var resistor = valueToColor(text);
+	
+	band1.className = c[resistor[0]];
+	band2.className = c[resistor[1]];
+	band3.className = c[resistor[2]];
+	band4.className = t[resistor[3]] || "gold";
+	
+	/*
+	band1.innerHTML = c[band1.className];
+	band2.innerHTML = c[band2.className];
+	band3.innerHTML = c[band3.className];
+	band4.innerHTML = t[band4.className];
+	*/
+	
+	if(e && e.keyCode==13){
+		changeHash(text);	
+	}
+	
+}
+
+function colorToValue(color1, color2, color3, color4){
+	
+	var ohms = parseInt(c[color1] +''+ c[color2],10) * Math.pow(10,c[color3]);
+	var tollerance = t[color4 || 'gold']+"%";
+	
+	return metricPrefix(ohms, 'Ω',false, 2) +" "+ tollerance;
+}
+
+function valueToColor(text){
+	
+	function match(text, regex){
+		var result = regex.exec(text);
+		return result?result[0]:"";
+	}	
+	
+	var ohms = match(text, /[0-9]+[.,RKMG]?[0-9]*/i);
+	var mult = match(text, /[KMG]/i);
+	var tole = match(text, /[0-9]+[.,]?[0-9]*%/);
+		
+	if(ohms){
+		
+		ohms = ohms.replace(/[,RKMG]/i,"."); 
+		ohms = parseFloat(ohms);
+		
+		if(/K/i.test(mult)) ohms*=1000;
+		if(/M/i.test(mult)) ohms*=1000000;
+		if(/G/i.test(mult)) ohms*=1000000000;
+	
+		var order=0;
+		
+		if (ohms<1){
+			order = -2;
+			ohms = ohms*Math.pow(10,2);
+		}
+		else if (ohms<10){
+			order = -1;
+			ohms = ohms*Math.pow(10,1);
+		}
+		else while(ohms>=100){
+			ohms/=10;
+			order++;
+		}
+		
+		ohms+="";
+		
+	}
+	
+	console.log([ohms.charAt(0), ohms.charAt(1), order, tole]);
+	return [ohms.charAt(0), ohms.charAt(1), order, tole];
+}
+
+function metricPrefix(x, unit, long, fdigits){
+
+	var prefixes=[
+		//[-24, 'y' ,'yocto'],
+		//[-21, 'z', 'zepto'],
+		//[-18, 'a', 'atto'],
+		//[-15, 'f', 'femto'],
+		//[-12, 'p', 'pico'],
+		//[ -9, 'n', 'nano'],
+		//[ -6, 'µ', 'micro'],
+		//[ -3, 'm', 'mili'],
+		//[ -2, 'c', 'centi'],
+		[  0, '', ''],
+		[  3, 'K', 'kilo'],
+		[  6, 'M', 'mega'],
+		[  9, 'G', 'giga'],
+		[ 12, 'T', 'tera'],
+		[ 15, 'P', 'peta'],
+		[ 18, 'E', 'exa'],
+		[ 21, 'Z', 'zetta'],
+		[ 24, 'Y', 'yotta']
+	];
+
+	var prefix = {
+		'base': 1,
+		'power': 0,
+		'symbol': '',
+		'name': '',
+	};
+
+	if(x!=0){
+
+		for(var i=0; i<prefixes.length; i++){
+
+			var base = Math.pow(10, prefixes[i][0]);
+
+			if(x>=base){
+				prefix = {
+					'base': base,
+					'power': prefixes[i][0],
+					'symbol': prefixes[i][1],
+					'name': prefixes[i][2]
+				};
+			}
+			else break;
+		}
+
+		x = (x/prefix.base);
+	}
+
+	if(fdigits!=null) x=parseFloat(x.toFixed(fdigits)); //limit float digits
+
+	return ( x + (long?prefix.name:prefix.symbol) + (unit||"") );
+}
+
+function changeHash(text){
+	window.location.hash = "#"+encodeURIComponent(text);
+	titleDescription(value);
+	window.hashChangedByCode=(window.hashChangedByCode||0)+1;
+}
+
+function readHash(){
+	var hash = decodeURIComponent(window.location.hash.slice(1));
+	var colorHash = hash.match(/black|brown|red|orange|yellow|green|blue|violet|gr[ae]y|white|gold|silver/gi);
+	if(colorHash!=null && (colorHash.length==3 || colorHash.length==4)){
+		
+		band1.className = colorHash[0].toLowerCase();
+		band2.className = colorHash[1].toLowerCase();
+		band3.className = colorHash[2].toLowerCase();
+		band4.className = (colorHash[3]||'gold').toLowerCase();
+		
+		//label.value = colorToValue(band1.className, band2.className, band3.className, band4.className);
+		onChangeColor();
+		titleDescription(value);
+
+	}
+	else if(window.location.hash){
+		var value = decodeURIComponent(window.location.hash.slice(1));
+		label.value = value;
+		titleDescription(value);
+		onChangeValue();
+	}
+}
+
+
+function titleDescription(description){
+	if(!iOS)
+		window.document.title = description+" Resistor";
+	else
+		window.document.title = "Resistor "+description; //iOS use title as app name, so put name before value
+}
+
+</script>
+  
+</body>
+</html>

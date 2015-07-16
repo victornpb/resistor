@@ -1,0 +1,130 @@
+@charset "UTF-8";
+/* popover.css Copyright Vitim.us 24-jun-2013 */
+
+
+/* Popover Style */
+.popover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1010;
+    
+    max-width: 276px;
+    padding: 1px;
+	
+    text-align: left;
+    white-space: normal;
+	
+    background-color: #ffffff;
+	
+    border: 1px solid #ccc;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+	
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+	
+    -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+	
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+                
+.popover .title {
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ebebeb;
+	
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+}
+                
+.popover .content {
+    padding: 9px 14px;
+}
+
+.popover{
+    margin: 12px;
+}
+
+/* Arrow Style */
+.popover:after {
+	border-color: #fcfcfc;
+	border-width: 10px;
+}
+.popover.above:after,
+.popover.below:after{
+  margin-left: -10px;
+}
+.popover.left:after,
+.popover.right:after{
+  margin-top: 2px;
+}
+/* Arrow Shadow Style */
+.popover:before {
+    border-color: rgba(0,0,0,0.25);
+	border-width: 12px;
+}
+.popover.above:before,
+.popover.below:before{
+  margin-left: -12px;
+}
+.popover.left:before,
+.popover.right:before{
+  margin-top: 0px;
+}
+
+/* Arrow Positioning */
+.popover:not(.arrow):after,
+.popover:not(.arrow):before{
+  -display:none;  
+}
+.popover:after,
+.popover:before{
+  position: absolute;
+  border-style: solid;
+  content: "";
+  height: 0;
+  width: 0;
+  pointer-events: none;
+}
+.popover.below:after,
+.popover.below:before{
+  left: 50%;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.popover.above:after,
+.popover.above:before{
+  left: 50%;
+  top: 100%;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.popover.left:after,
+.popover.left:before{
+  top: 0;
+  left: 100%;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+.popover.right:after,
+.popover.right:before{
+  top: 0;
+  right: 100%;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
