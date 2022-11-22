@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Resistor Divider Finder</h1>
+    <div>
+        <div><label> Input: <input type="number" id="inputVoltage" value="5.0"> volts</label></div>
+        <div><label> Output: <input type="number" id="outputVoltage" value="2.5"> volts</label></div>
+        <div>
+            <label>
+            Resistors Assortment<br>
+            <textarea id="assortmentValues" cols="80" rows="10" placeholder="Enter all possible resistor values in ohms separated by comma or breaklines">10, 22, 47, 100, 150, 220, 270, 330, 470, 510, 680,
+1000, 2000, 2200, 3300, 4700, 5000, 5100, 6800,
+10000, 20000, 47000, 68000, 100000, 200000, 220000, 300000, 470000, 680000,
+1000000</textarea>
+        </label>
+        </div>
+        <button type="button" id="calcBtn">Find best combination</button>
+    </div>
+
+    <pre id="output"></pre>
+    
+    <script>
+        let inputVoltage;
+        let outputVoltage;
+        let assortmentValues;
+        let calcBtn;
+        let output;
+
+        window.onload = function(){
+            inputVoltage = document.querySelector('#inputVoltage');
+            outputVoltage = document.querySelector('#outputVoltage');
+            assortmentValues = document.querySelector('#assortmentValues');
+            calcBtn = document.querySelector('#calcBtn');
+            output = document.querySelector('#output');
+
+            calcBtn.onclick = calc;
+        };
+
+        function calc(){
+            // parse inputs
+            const inputVoltageValue = parseFloat(inputVoltage.value);
+            const outputVoltageValue = parseFloat(outputVoltage.value);
+            const resistors = assortmentValues.value.trim().split(/[;,\n]+/).map(v=>parseFloat(v.trim())).filter(Boolean);
+
+            // calc fraction
+            const desiredFraction = outputVoltageValue / inputVoltageValue;
+
+            let combinations = [];
+
+            for (const r1 of resistors) {
+                for (const r2 of resistors) {
+                    const vout = (inputVoltageValue * r2) / (r1 + r2);
+                    const error = outputVoltageValue - vout;
+                    combinations.push({
+                        r1,
+                        r2,
+                        vout,
+                        error:  Math.abs(1- (outputVoltageValue / vout)) * 100
+                    });
+                }
+            }
+
+            // sort combinations and take best 10
+            combinations = sortBy(combinations, 'error');
+            combinations = combinations.slice(0, 50);
+            
+            for (const c of combinations){
+                const current = inputVoltageValue / (c.r1 + c.r2) * 1000; // mA
+                const power = inputVoltageValue * current; // mW
+                c.current = current;
+                c.power = power;
+            }
+            
+            
+            
+            let text = [];
+            text.push([
+                    'R1',
+                    'R2',
+                    'Output',
+                    'Error Percent',
+                    'Current',
+                    'Power Loss',
+                ].join('\t'));
+
+            for (const c of combinations){
+                text.push([
+                    c.r1,
+                    c.r2,
+                    `${c.vout.toFixed(3)}v`,
+                    `${c.error.toPrecision(6)}%`,
+                    `${c.current.toFixed(2)}mA`,
+                    `${c.power.toFixed(2)}mW`,
+
+
+                ].join('\t'))
+            }
+            text = text.join('\n');
+            output.innerHTML = text;
+            console.log(combinations);
+        }
+
+
+        function sortBy(arr, fields) {
+            if (typeof fields === 'string') fields = [fields];
+            function compareFn(a, b) {
+            return fields
+                .map(field => {
+                let dir = 1;
+                if (field[0] === "-") {
+                    dir = -1;
+                    field = field.substring(1);
+                }
+                return a[field] > b[field] ? dir : a[field] < b[field] ? -dir : 0;
+                })
+                .reduce((p, n) => (p ? p : n), 0);
+            }
+            return arr.slice().sort(compareFn);
+        }
+    </script>
+</body>
+</html>
