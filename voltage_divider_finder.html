@@ -1,30 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Voltage Divider Resistor Finder</title>
+    <style>
+    svg{
+      font-family: monospace;
+    }
+
+    body{
+      font-family: sans-serif;
+    }
+    table{
+      width: 100%;
+      max-width: 800px;
+    }
+    </style>
 </head>
+
 <body>
-    <h1>Resistor Divider Finder</h1>
+    <h1>Voltage Divider Resistor Finder</h1>
+    <p>
+        Find the best combination of resistor for a desired voltage divider from an assortment of values
+    </p>
+
     <div>
-        <div><label> Input: <input type="number" id="inputVoltage" value="5.0"> volts</label></div>
-        <div><label> Output: <input type="number" id="outputVoltage" value="2.5"> volts</label></div>
+        <svg width="388" height="382" viewBox="0 0 388 382" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="VOLTAGEDIVIDER">
+                <g id="Schematic">
+                    <path id="WIRE_1" d="M201 328.5V360.5" stroke="#429C33" stroke-width="3" />
+                    <path id="WIRE_2" d="M135 38.5H201V69M201 169V199.5M200.5 229H201V199.5M260.5 199.5H201"
+                        stroke="#429C33" stroke-width="3" />
+                    <circle id="JUNCTION" cx="201.5" cy="199.5" r="5.5" fill="#429C33" />
+                    <circle id="VIN_point" cx="132.5" cy="38.5" r="3.5" stroke="#429C33" stroke-width="2" />
+                    <circle id="VOUT_point" cx="264.5" cy="199.5" r="3.5" stroke="#429C33" stroke-width="2" />
+                    <path id="R1"
+                        d="M201 67.5V91L211.5 94.5L191 101L211.5 108L191 115L211.5 121.5L191 128L211.5 135L191 141.5L201 146V169"
+                        stroke="#BB0D0D" stroke-width="3" />
+                    <path id="R2"
+                        d="M201 229V252.5L211.5 256L191 262.5L211.5 269.5L191 276.5L211.5 283L191 289.5L211.5 296.5L191 303L201 307.5V330.5"
+                        stroke="#BB0D0D" stroke-width="3" />
+                    <g id="GND">
+                        <line x1="183" y1="360.5" x2="220" y2="360.5" stroke="#771507" stroke-width="3" />
+                        <line x1="189" y1="370.5" x2="214" y2="370.5" stroke="#771507" stroke-width="3" />
+                        <line x1="197" y1="380.5" x2="206" y2="380.5" stroke="#771507" stroke-width="3" />
+                    </g>
+                </g>
+                <text id="Vin_label" fill="#84827C" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan x="75" y="23.2273">Vin</tspan>
+                </text>
+                <text fill="currentColor" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan id="vin_value" x="59.9844" y="46.2273"></tspan>
+                </text>
+                <text id="Vout_label" fill="#84827C" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan x="277" y="180.227">Vout</tspan>
+                </text>
+                <text fill="currentColor" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan id="vout_value" x="277" y="206.227"></tspan>
+                </text>
+                <text id="R1_label" fill="#84827C" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan x="144" y="118.227">R1</tspan>
+                </text>
+                <text fill="currentColor" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan id="r1_value" x="122" y="141.227"></tspan>
+                </text>
+                <text id="R2_2" fill="#84827C" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan x="144" y="276.227">R2</tspan>
+                </text>
+                <text fill="currentColor" xml:space="preserve" style="white-space: pre" font-size="24"
+                    letter-spacing="0em">
+                    <tspan id="r2_value" x="113" y="299.227"></tspan>
+                </text>
+            </g>
+        </svg>
+
+    </div>
+
+<br>
+
+    <div>
+        <div><label> Vin: <input type="number" id="inputVoltage" value="5.0"></label> <label> Vout: <input type="number" id="outputVoltage" value="2.5"></label></div>
         <div>
             <label>
-            Resistors Assortment<br>
-            <textarea id="assortmentValues" cols="80" rows="10" placeholder="Enter all possible resistor values in ohms separated by comma or breaklines">10, 22, 47, 100, 150, 220, 270, 330, 470, 510, 680,
+                Resistors Assortment<br>
+                <textarea id="assortmentValues" cols="80" rows="10"
+                    placeholder="Enter all possible resistor values in ohms separated by comma or breaklines">10, 22, 47, 100, 150, 220, 270, 330, 470, 510, 680,
 1000, 2000, 2200, 3300, 4700, 5000, 5100, 6800,
 10000, 20000, 47000, 68000, 100000, 200000, 220000, 300000, 470000, 680000,
 1000000</textarea>
-        </label>
+            </label>
         </div>
         <button type="button" id="calcBtn">Find best combination</button>
     </div>
 
     <pre id="output"></pre>
     
+    <footer>
+      <a href="https://www.vitim.us">Created by Victornpb</a>
+    </footer>
+
     <script>
         let inputVoltage;
         let outputVoltage;
@@ -32,7 +116,7 @@
         let calcBtn;
         let output;
 
-        window.onload = function(){
+        window.onload = function () {
             inputVoltage = document.querySelector('#inputVoltage');
             outputVoltage = document.querySelector('#outputVoltage');
             assortmentValues = document.querySelector('#assortmentValues');
@@ -42,11 +126,14 @@
             calcBtn.onclick = calc;
         };
 
-        function calc(){
+        function calc() {
             // parse inputs
             const inputVoltageValue = parseFloat(inputVoltage.value);
             const outputVoltageValue = parseFloat(outputVoltage.value);
-            const resistors = assortmentValues.value.trim().split(/[;,\n]+/).map(v=>parseFloat(v.trim())).filter(Boolean);
+            const resistors = assortmentValues.value.trim().split(/[;,\n]+/).map(v => parseFloat(v.trim())).filter(Boolean);
+
+            document.querySelector('#vin_value').textContent = `${inputVoltageValue}v`;
+            document.querySelector('#vout_value').textContent = `${outputVoltageValue}v`;
 
             // calc fraction
             const desiredFraction = outputVoltageValue / inputVoltageValue;
@@ -61,7 +148,7 @@
                         r1,
                         r2,
                         vout,
-                        error:  Math.abs(1- (outputVoltageValue / vout)) * 100
+                        error: Math.abs(1 - (outputVoltageValue / vout)) * 100
                     });
                 }
             }
@@ -69,27 +156,27 @@
             // sort combinations and take best 10
             combinations = sortBy(combinations, 'error');
             combinations = combinations.slice(0, 50);
-            
-            for (const c of combinations){
+
+            for (const c of combinations) {
                 const current = inputVoltageValue / (c.r1 + c.r2) * 1000; // mA
                 const power = inputVoltageValue * current; // mW
                 c.current = current;
                 c.power = power;
             }
-            
-            
-            
+
+
+
             let text = [];
             text.push([
-                    'R1',
-                    'R2',
-                    'Output',
-                    'Error Percent',
-                    'Current',
-                    'Power Loss',
-                ].join('\t'));
+                'R1',
+                'R2',
+                'Output',
+                'Error Percent',
+                'Current',
+                'Power Loss',
+            ].join('\t'));
 
-            for (const c of combinations){
+            for (const c of combinations) {
                 text.push([
                     c.r1,
                     c.r2,
@@ -102,27 +189,64 @@
                 ].join('\t'))
             }
             text = text.join('\n');
-            output.innerHTML = text;
+            output.innerHTML = createTable(combinations);
             console.log(combinations);
+
+
+            const best = combinations[0];
+            document.querySelector('#r1_value').textContent = `${best.r1}`;
+            document.querySelector('#r2_value').textContent = `${best.r2}`;
+
+        }
+        
+        function createTable(arr){
+        const header = `
+        	<tr>
+          <th>R1</th>
+          <th>R2</th>
+          <th>Output</th>
+          <th>ErrorPercent</th>
+          <th>Current</th>
+          <th>PowerLoss</th>
+          </tr>
+        `;
+        		const lines = arr.map(c=>`
+            <tr>
+              <td>${c.r1}</td>
+              <td>${c.r2}</td>
+              <td>${c.vout.toFixed(3)}v</td>
+              <td>${c.error.toPrecision(6)}%</td>
+              <td>${c.current.toFixed(2)}mA</td>
+              <td>${c.power.toFixed(2)}mW</td>
+            </tr>
+            `);
+            
+            return `<table>
+            <thead>${header}</thead>
+            <tbody>${lines.join('')}</tbody>
+            </table>`;
         }
 
 
         function sortBy(arr, fields) {
             if (typeof fields === 'string') fields = [fields];
+
             function compareFn(a, b) {
-            return fields
-                .map(field => {
-                let dir = 1;
-                if (field[0] === "-") {
-                    dir = -1;
-                    field = field.substring(1);
-                }
-                return a[field] > b[field] ? dir : a[field] < b[field] ? -dir : 0;
-                })
-                .reduce((p, n) => (p ? p : n), 0);
+                return fields
+                    .map(field => {
+                        let dir = 1;
+                        if (field[0] === "-") {
+                            dir = -1;
+                            field = field.substring(1);
+                        }
+                        return a[field] > b[field] ? dir : a[field] < b[field] ? -dir : 0;
+                    })
+                    .reduce((p, n) => (p ? p : n), 0);
             }
             return arr.slice().sort(compareFn);
         }
+
     </script>
 </body>
+
 </html>
